@@ -10,7 +10,7 @@ namespace LibraryManagement.Domain.Entities
         public string Edition { get; set; } = string.Empty;
         public int Quantity { get; set; }
 
-        ICollection<Loan> Loans {get;set;} = new List<Loan>();
+        public ICollection<Loan> Loans {get;set;} = new List<Loan>();
 
 
     }
