@@ -1,30 +1,33 @@
+using LibraryManagement.Application.DTOs.Auth;
+using LibraryManagement.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.Api.Controllers
 {
-    [ApiController]
-    [Authorize(AuthenticationSchemes ="Bearer")]
-    [Authorize(AuthenticationSchemes = "Bearer,Cookies")]
-    [Route("api/[controller]")]
-    public class AccountController:ControllerBase
+   [ApiController]
+[Route("api/[controller]")]
+public class AuthController : ControllerBase
+{
+    private readonly IAuthService _authService;
+
+    public AuthController(IAuthService authService)
     {
-        [HttpPost("Register")]
-        public IActionResult Register()
-        {
-            return Ok("Registered");
-        }
-
-        [HttpPost("Login")]
-        public IActionResult Login()
-        {
-            return Ok("Login");
-        }
-
-        [HttpPost("Logout")]
-        public IActionResult Logout()
-        {
-            return Ok("Logout");
-        }
+        _authService = authService;
     }
+
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+    {
+        var response = await _authService.RegisterAsync(request);
+        return Ok(response);
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
+    {
+        var response = await _authService.LoginAsync(request);
+        return Ok(response);
+    }
+}
 }
